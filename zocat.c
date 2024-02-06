@@ -15,11 +15,25 @@
 #include <fcntl.h>
 #include <time.h>
 #include <linux/limits.h>
+#include <sys/time.h>
 
 
 #define RECEIVE_BUFFER_SIZE (1024 * 1024)
 
+#define PRINT_INT(X) fprintf(stderr, #X "=%lu" "\n", X)
+
+static void checkSizeOf(void){
+	struct timeval tv;
+	PRINT_INT(sizeof(tv));
+	PRINT_INT(sizeof(tv.tv_sec));
+	PRINT_INT(sizeof(tv.tv_usec));
+	exit(0);
+}
+
 int main(int argc, char * const argv[]){
+
+	checkSizeOf();
+
         const char *formatString = NULL;
 	struct in_addr remote_addr = {0};
 	struct in_addr local_addr = {0};
