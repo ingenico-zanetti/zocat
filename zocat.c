@@ -22,7 +22,7 @@
 
 #define PRINT_INT(X) fprintf(stderr, #X "=%lu" "\n", X)
 
-static void checkSizeOf(void){
+void checkSizeOf(void){
 	struct timeval tv;
 	PRINT_INT(sizeof(tv));
 	PRINT_INT(sizeof(tv.tv_sec));
@@ -32,7 +32,7 @@ static void checkSizeOf(void){
 
 int main(int argc, char * const argv[]){
 
-	checkSizeOf();
+	// checkSizeOf();
 
         const char *formatString = NULL;
 	struct in_addr remote_addr = {0};
