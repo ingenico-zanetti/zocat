@@ -129,6 +129,7 @@ int main(int argc, char * const argv[]){
 						if(connected < 0){
 							fprintf(stderr, "connect(): %d/%s" "\n", errno, strerror(errno));
 						}else{
+							unsigned int socket_timeout = 0;
 							unsigned long long totalRead = 0ULL;
 							for(;;){
 								fd_set read_set;
@@ -141,9 +142,13 @@ int main(int argc, char * const argv[]){
 									break;
 								}
 								if(0 == selected){
-									fprintf(stderr, "0 == selected, shutting down socket" "\n");
-									break;
+									socket_timeout++;
+									fprintf(stderr, "0 == selected, increasing timeout => %u" "\n", socket_timeout);
+									if(socket_timeout > traffic_timeout){
+										break;
+									}
 								}else{
+									socket_timeout = 0;
 									// fprintf(stderr, "check received" "\n");
 									int lus = read(traffic_socket, recvBuffer, RECEIVE_BUFFER_SIZE);
 									if(0 == lus){
@@ -169,7 +174,6 @@ int main(int argc, char * const argv[]){
 
 							}
 							fprintf(stderr, "total received = %llu" "\n", totalRead);
-							getchar();
 						}
 						close(traffic_socket);
 						close(forward_socket);
